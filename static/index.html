@@ -1,0 +1,44 @@
+<body>
+    <script>
+        function add(p) {
+            console.log("add")
+            fetch("/add?name=".concat(document.getElementById("name").value))
+            location.reload()
+        }
+        function res(p) {
+            fetch("/res?win=".concat(document.getElementById("winner").value, "&lose=", document.getElementById("loser").value))
+            location.reload()
+        }
+    </script>
+    <input type="text" id="name" size="9">
+    <button onclick="add()">Add player</button><br>
+    <label for="winner">Winner</label>
+    <select id="winner"></select>
+    <label for="loser">Loser</label>
+    <select id="loser"></select>
+    <button onclick="res()">Send result</button><br>
+    <div id="score"></div>
+    <script>
+        function up_player(p) {
+            var w = document.getElementById("winner")
+            var l = document.getElementById("loser")
+            var s = document.getElementById("score")
+            for (var i in p) {
+                var option = document.createElement("option");
+                option.text = p[i][0];
+                option.value = p[i][0];
+                w.appendChild(option);
+                option = document.createElement("option");
+                option.text = p[i][0];
+                option.value = p[i][0];
+                l.appendChild(option);
+                option = document.createElement("div")
+                option.innerHTML = p[i][0].concat(': ', p[i][1])
+                s.appendChild(option)
+            }
+        }
+        fetch("/players")
+            .then(res => res.json())
+            .then(data => up_player(data))
+    </script>
+</body>
